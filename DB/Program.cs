@@ -9,11 +9,16 @@ using System.Configuration;
 
 namespace DB
 {
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            Console.WriteLine("Hello World!");
-        }
-    }
+	class Program
+	{
+		static void Main(string[] args)
+		{
+			string connectionString = "mongodb://localhost:27017";
+			MongoClient client = new MongoClient(connectionString);
+
+			// IMongoDatabase database = client.GetDatabase("test");
+
+			Console.WriteLine("Hello World!");
+		}
+	}
 }
