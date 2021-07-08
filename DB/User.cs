@@ -4,15 +4,19 @@ namespace DB
 {
 	public class User
 	{
-		public User(int id, string name)
+		public User(int Uid, string name, string surname, int age)
 		{
-			this.Id = id;
+			this.Id = Uid;
+			this.UId = Uid;
 			this.Name = name;
+			this.Surname = surname;
+			this.Age = age;
 		}
-
-		int Id { get; set; }
-		string Name { get; set; }
-		string Surname { get; set; }
-		int Age { get; set; }
+		
+		public int Id { get; set; }
+		public int UId { get; set; }
+		public string Name { get; set; }
+		public string Surname { get; set; }
+		public int Age { get; set; }
 	}
 }
