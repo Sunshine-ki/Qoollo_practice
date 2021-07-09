@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DB>
+	<ConnectionString>mongodb://localhost:27017</ConnectionString>
+	<DBName>Qoolloo_name</DBName>
+</DB>

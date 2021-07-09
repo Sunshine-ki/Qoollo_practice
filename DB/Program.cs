@@ -6,46 +6,79 @@ using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Configuration;
+using System.Text.Json;
+using System.IO;
+using System.Xml;
+
 
 namespace DB
 {
+	class XMLReading //читает конфиг из xml
+    {
+		public static List<string> ReadXml(string fileName)
+		{
+			var DBinfo = new List<string>();
+			using (XmlTextReader reader = new XmlTextReader(fileName))
+			{
+				while (reader.Read())
+				{
+					if (reader.IsStartElement("DB") && !reader.IsEmptyElement)
+					{
+						while (reader.Read())
+						{
+							if (reader.IsStartElement("ConnectionString"))
+								DBinfo.Add(reader.ReadString());
+							else if (reader.IsStartElement("DBName"))
+								DBinfo.Add(reader.ReadString());
+							else break;
+						}
+					}
+				}
+			}
+			return DBinfo;
+		}
+	}
+	
+
 	class Program
 	{
 		static void Main(string[] args)
 		{
-			IUserRepository repositoryUser = new UserMongoRepository("mongodb://localhost:27017", "Qoolloo_name");
+			var DBinfo = XMLReading.ReadXml("C:/Users/maste/source/repos/Qoolo_practice/DB/DBconfig.xml");
+			
+			IUserRepository repositoryUser = new UserMongoRepository(DBinfo[0], DBinfo[1]);
 
-			User u = new User()
-			{
-				Id = 4,
-				UId = 4,
-				Name = "name",
-				Surname = "surname",
-				Age = 20
-			};
+            User u = new User()
+            {
+                Id = 4,
+                UId = 4,
+                Name = "name",
+                Surname = "surname",
+                Age = 20
+            };
 
-			repositoryUser.SetUser(u);
-			// User user1 = new User(0, "Dan", "Danov", 228);
-			// User user2 = new User(1, "Bill", "Billov", 117);
+            repositoryUser.SetUser(u);
+            // User user1 = new User(0, "Dan", "Danov", 228);
+            // User user2 = new User(1, "Bill", "Billov", 117);
 
-			// Facade.SetUser(user1, db); //готово
+            // Facade.SetUser(user1, db); //готово
 
-			//Facade.SetUser(user2, db);  //готово
+            //Facade.SetUser(user2, db);  //готово
 
-			//Facade.UpdateUser(user1.UId, user2, db); //готово
+            //Facade.UpdateUser(user1.UId, user2, db); //готово
 
-			//Facade.GetAllUsers(db);  //готово
+            //Facade.GetAllUsers(db);  //готово
 
-			//Facade.DeleteUserById(1, db); //готово
+            //Facade.DeleteUserById(1, db); //готово
 
-			//SaveDocs().GetAwaiter().GetResult();
-		}
+            //SaveDocs().GetAwaiter().GetResult();
+        }
 
-		public static IMongoDatabase MangoMakeConnection() //создаем соединение и возвращаем базу данных
+		public static IMongoDatabase MangoMakeConnection() //making connection to DB
 		{
 			string connectionString = "mongodb://localhost:27017";
 			var client = new MongoClient(connectionString);
-			var database = client.GetDatabase("Qoolloo_name"); //подключились к базе test
+			var database = client.GetDatabase("Qoolloo_name"); //Conneting to test DB
 			return database;
 
 		}

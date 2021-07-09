@@ -15,54 +15,54 @@ namespace DB
 			_db = client.GetDatabase(databaseString);
 		}
 
-		public List<User> GetUserById(int uId) //�������� ������ user
+		public List<User> GetUserById(int uId) //return user info using his id
 		{
 			var filter = new BsonDocument("Id", uId.ToString());
 			var user = _db.GetCollection<User>("Users").Find(filter).ToList();
 
-			Console.WriteLine(user); //������� � �������
+			Console.WriteLine(user); //debug info
 			return user;
 		}
 
-		public List<User> GetAllUsers() //������� ���� user 
+		public List<User> GetAllUsers() //return info about all users in DB
 		{
 			var filter = new BsonDocument("UId", new BsonDocument("$gt", 0));
 			var users = _db.GetCollection<User>("Users").Find(filter).ToList();
 			foreach (var doc in users)
 			{
-				Console.WriteLine(doc); //������� � �������
+				Console.WriteLine(doc); //debug info
 			}
 			return users;
 		}
 
-		public void SetUser(User u) //������ user � ���� ������
+		public void SetUser(User u) //create user in DB
 		{
 			try
 			{
-				_db.GetCollection<User>("Users").InsertOne(u); //������� ������ ���������  � �������� � ��� user
+				_db.GetCollection<User>("Users").InsertOne(u); //get user in selected collection in DB
 			}
 			catch { Console.WriteLine("Same index Exception mb?\n"); }
 
-			Console.WriteLine("User ��� ��������!\n");
+			Console.WriteLine("User was added to DB!\n");
 		}
 
-		public void UpdateUser(int userOldId, User userNew) // �������� ������ userID 
+		public void UpdateUser(int userOldId, User userNew) // update user info and searching him by userID 
 		{
-			var filter = new BsonDocument("UId", userOldId); //��� ���� ������� �������� �� ������� ������ ����� � ��, ��������
+			var filter = new BsonDocument("UId", userOldId); //filter that is used to find particular user
 			var update = Builders<User>.Update.Set("UId", userNew.UId)
 											  .Set("Name", userNew.Name)
 											  .Set("Surname", userNew.Surname)
 											  .Set("Age", userNew.Age);
 			var user = _db.GetCollection<User>("Users").UpdateOne(filter, update);
 
-			Console.WriteLine("User ��� ��������!\n");
+			Console.WriteLine("User info was updated!\n");
 		}
 
-		public void DeleteUserById(int UId) // ������� user �� ��
+		public void DeleteUserById(int UId) // delete user from DB
 		{
 			var filter = Builders<User>.Filter.Eq("UId", UId);
 			var users = _db.GetCollection<User>("Users").DeleteOne(filter);
-			Console.WriteLine("User ������ �� ��!\n");
+			Console.WriteLine("User was deleted!\n");
 		}
 	}
 }
