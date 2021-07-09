@@ -26,7 +26,7 @@ namespace DB
 
 		public List<User> GetAllUsers() //return info about all users in DB
 		{
-			var filter = new BsonDocument("UId", new BsonDocument("$gt", 0));
+			var filter = new BsonDocument();
 			var users = _db.GetCollection<User>("Users").Find(filter).ToList();
 			foreach (var doc in users)
 			{
@@ -48,9 +48,8 @@ namespace DB
 
 		public void UpdateUser(int userOldId, User userNew) // update user info and searching him by userID 
 		{
-			var filter = new BsonDocument("UId", userOldId); //filter that is used to find particular user
-			var update = Builders<User>.Update.Set("UId", userNew.UId)
-											  .Set("Name", userNew.Name)
+			var filter = Builders<User>.Filter.Eq("Id", userOldId); //filter that is used to find particular user
+			var update = Builders<User>.Update.Set("Name", userNew.Name)
 											  .Set("Surname", userNew.Surname)
 											  .Set("Age", userNew.Age);
 			var user = _db.GetCollection<User>("Users").UpdateOne(filter, update);
@@ -58,9 +57,9 @@ namespace DB
 			Console.WriteLine("User info was updated!\n");
 		}
 
-		public void DeleteUserById(int UId) // delete user from DB
+		public void DeleteUserById(int Id) // delete user from DB
 		{
-			var filter = Builders<User>.Filter.Eq("UId", UId);
+			var filter = Builders<User>.Filter.Eq("Id", Id);
 			var users = _db.GetCollection<User>("Users").DeleteOne(filter);
 			Console.WriteLine("User was deleted!\n");
 		}

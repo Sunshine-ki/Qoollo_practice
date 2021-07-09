@@ -48,31 +48,34 @@ namespace DB
 			
 			IUserRepository repositoryUser = new UserMongoRepository(DBinfo[0], DBinfo[1]);
 
-            User u = new User()
+            User u1 = new User()
             {
                 Id = 4,
-                UId = 4,
-                Name = "name",
-                Surname = "surname",
+                Name = "name1",
+                Surname = "surname1",
                 Age = 20
             };
 
-            repositoryUser.SetUser(u);
-            // User user1 = new User(0, "Dan", "Danov", 228);
-            // User user2 = new User(1, "Bill", "Billov", 117);
+			User u2 = new User()
+			{
+				Id = 8,
+				Name = "name2",
+				Surname = "surname2",
+				Age = 33
+			};
 
-            // Facade.SetUser(user1, db); //готово
+			//repositoryUser.SetUser(u1);
+			//repositoryUser.SetUser(u2);
 
-            //Facade.SetUser(user2, db);  //готово
+			//repositoryUser.DeleteUserById(u1.Id);
 
-            //Facade.UpdateUser(user1.UId, user2, db); //готово
+			//repositoryUser.GetUserById(u1.Id);
 
-            //Facade.GetAllUsers(db);  //готово
+			//repositoryUser.GetAllUsers();
 
-            //Facade.DeleteUserById(1, db); //готово
+			repositoryUser.UpdateUser(u1.Id, u2);
 
-            //SaveDocs().GetAwaiter().GetResult();
-        }
+		}
 
 		public static IMongoDatabase MangoMakeConnection() //making connection to DB
 		{
