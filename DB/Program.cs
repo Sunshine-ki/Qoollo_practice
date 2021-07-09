@@ -13,7 +13,6 @@ namespace DB
 	{
 		static void Main(string[] args)
 		{
-			var db = MangoMakeConnection();
 			IUserRepository repositoryUser = new UserMongoRepository("mongodb://localhost:27017", "Qoolloo_name");
 
 			User u = new User()
