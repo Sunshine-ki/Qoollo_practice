@@ -5,7 +5,7 @@ using MongoDB.Driver;
 using System.Threading.Tasks;
 // using User;
 
-namespace DB
+namespace QoolloSSO.backend.DataBase.Models
 {
 	public class Facade
 	{

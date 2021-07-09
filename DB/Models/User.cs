@@ -2,7 +2,7 @@ using System;
 
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace DB
+namespace QoolloSSO.backend.DataBase.Models
 {
 	public class User
 	{

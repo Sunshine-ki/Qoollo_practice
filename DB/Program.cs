@@ -11,7 +11,7 @@ using System.IO;
 using System.Xml;
 
 
-namespace DB
+namespace QoolloSSO.backend.DataBase.Models
 {
 	class XMLReading //читает конфиг из xml
     {

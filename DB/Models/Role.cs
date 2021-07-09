@@ -1,4 +1,5 @@
-namespace DB //QoolloSSO.DataBase.Models
+using System.Collections.Generic;
+namespace QoolloSSO.backend.DataBase.Models //QoolloSSO.DataBase.Models
 {
     public class Role
     {

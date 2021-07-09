@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
-namespace DB
+namespace QoolloSSO.backend.DataBase.Models
 {
 	public class UserMongoRepository : IUserRepository
 	{
