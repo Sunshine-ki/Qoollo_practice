@@ -5,10 +5,10 @@ namespace DB
 {
 	public interface IUserRepository
 	{
-		List<User> GetUserById(int uId);
+		List<User> GetUserById(string Id);
 		List<User> GetAllUsers();
 		void SetUser(User u);
-		void UpdateUser(int userOldId, User userNew);
-		void DeleteUserById(int UId);
+		void UpdateUser(string userOldId, User userNew);
+		void DeleteUserById(string Id);
 	}
 }

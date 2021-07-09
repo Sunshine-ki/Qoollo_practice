@@ -15,9 +15,9 @@ namespace DB
 			_db = client.GetDatabase(databaseString);
 		}
 
-		public List<User> GetUserById(int uId) //return user info using his id
+		public List<User> GetUserById(string Id) //return user info using his id
 		{
-			var filter = new BsonDocument("Id", uId.ToString());
+			var filter = new BsonDocument("Id", Id);
 			var user = _db.GetCollection<User>("Users").Find(filter).ToList();
 
 			Console.WriteLine(user); //debug info
@@ -46,7 +46,7 @@ namespace DB
 			Console.WriteLine("User was added to DB!\n");
 		}
 
-		public void UpdateUser(int userOldId, User userNew) // update user info and searching him by userID 
+		public void UpdateUser(string userOldId, User userNew) // update user info and searching him by userID 
 		{
 			var filter = Builders<User>.Filter.Eq("Id", userOldId); //filter that is used to find particular user
 			var update = Builders<User>.Update.Set("Name", userNew.Name)
@@ -57,7 +57,7 @@ namespace DB
 			Console.WriteLine("User info was updated!\n");
 		}
 
-		public void DeleteUserById(int Id) // delete user from DB
+		public void DeleteUserById(string Id) // delete user from DB
 		{
 			var filter = Builders<User>.Filter.Eq("Id", Id);
 			var users = _db.GetCollection<User>("Users").DeleteOne(filter);

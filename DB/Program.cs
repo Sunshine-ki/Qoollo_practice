@@ -50,7 +50,7 @@ namespace DB
 
             User u1 = new User()
             {
-                Id = 4,
+                Id = "4",
                 Name = "name1",
                 Surname = "surname1",
                 Age = 20
@@ -58,7 +58,7 @@ namespace DB
 
 			User u2 = new User()
 			{
-				Id = 8,
+				Id = "8",
 				Name = "name2",
 				Surname = "surname2",
 				Age = 33
@@ -73,7 +73,7 @@ namespace DB
 
 			//repositoryUser.GetAllUsers();
 
-			repositoryUser.UpdateUser(u1.Id, u2);
+			//repositoryUser.UpdateUser(u1.Id, u2);
 
 		}
 
