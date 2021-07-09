@@ -18,6 +18,24 @@ namespace server.Controllers
 			_logger = logger;
 		}
 
+		public void Access()
+		{
+			Console.WriteLine("Access!");
+			Response.Redirect("https://localhost:5001/Home/Auth/?redirect_uri=qoolo_auth&code=as1kldj8rjdk");
+		}
+
+		public IActionResult Check(server.Models.User user)
+		{
+			Console.WriteLine($"Check {user.Login} {user.Password}");
+			return View();
+		}
+
+		public IActionResult Auth(string redirect_uri, string auth)
+		{
+			Console.WriteLine($"redirect_uri = {redirect_uri}\nauth = {auth}");
+			return View();
+		}
+
 		public IActionResult Index()
 		{
 			return View();
