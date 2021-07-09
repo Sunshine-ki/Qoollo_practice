@@ -13,14 +13,23 @@ namespace DB
 	{
 		static void Main(string[] args)
 		{
-            var db = MangoMakeConnection();
-			
-			
-			User user1 = new User(0, "Dan", "Danov", 228);
-			User user2 = new User(1, "Bill", "Billov", 117);
+			var db = MangoMakeConnection();
+			IUserRepository repositoryUser = new UserMongoRepository("mongodb://localhost:27017", "Qoolloo_name");
 
+			User u = new User()
+			{
+				Id = 4,
+				UId = 4,
+				Name = "name",
+				Surname = "surname",
+				Age = 20
+			};
 
-			//Facade.SetUser(user1, db); //готово
+			repositoryUser.SetUser(u);
+			// User user1 = new User(0, "Dan", "Danov", 228);
+			// User user2 = new User(1, "Bill", "Billov", 117);
+
+			// Facade.SetUser(user1, db); //готово
 
 			//Facade.SetUser(user2, db);  //готово
 
@@ -34,12 +43,12 @@ namespace DB
 		}
 
 		public static IMongoDatabase MangoMakeConnection() //создаем соединение и возвращаем базу данных
-        {
+		{
 			string connectionString = "mongodb://localhost:27017";
 			var client = new MongoClient(connectionString);
 			var database = client.GetDatabase("Qoolloo_name"); //подключились к базе test
 			return database;
-			
+
 		}
 		/*private static async Task SaveDocs() // это в принципе можно удалить но я пока оставил это сдесь
 		{
