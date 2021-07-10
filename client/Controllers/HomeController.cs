@@ -1,12 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Text;
 using System.Diagnostics;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using client.Models;
 using System.Web;
+using System.Net.Http;
+using System.Collections.Specialized;
+
 
 namespace client.Controllers
 {
@@ -19,14 +25,41 @@ namespace client.Controllers
 			_logger = logger;
 		}
 
-		public IActionResult Index()
+		public IActionResult SignIn()
 		{
 			return View();
 		}
 
+		public RedirectToActionResult Index()
+		{
+			return RedirectToAction("SignIn", "Home");//, new { a = 10, h = 12 });
+		}
+
 		public IActionResult Privacy()
 		{
+			// HttpClientHandler clientHandler = new HttpClientHandler();
+			// clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+
+			// // Pass the handler to httpclient(from you are calling api)
+			// HttpClient client = new HttpClient(clientHandler);
+
+			// using (var wb = new WebClient())
+			// {
+			// 	var data = new NameValueCollection();
+			// 	data["username"] = "myUser";
+			// 	data["password"] = "myPassword";
+			// 	data["postData"] = "postData!";
+
+			// 	var response = wb.UploadValues("https://localhost:5003/Home/TestPostRequest", "POST", data);
+			// 	string responseInString = Encoding.UTF8.GetString(response);
+			// }
+
 			return View();
+		}
+
+		public string GetCode(string code)
+		{
+			return code;
 		}
 
 		public string Auth(string redirect_uri, string code)
@@ -37,9 +70,9 @@ namespace client.Controllers
 		}
 
 		[HttpPost]
-		public void Login_With_Qoolo()
+		public void LoginWithQoolo()
 		{
-			Response.Redirect("https://localhost:5003/Home/Auth/?redirect_uri=Login_With_Qoolo&auth=code");
+			Response.Redirect("https://localhost:5003/Home/Auth/?redirect_uri=localhost:5001/Home/GetCode&auth=code&data=photo&who=mysite");
 		}
 
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

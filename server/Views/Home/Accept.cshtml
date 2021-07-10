@@ -1,0 +1,15 @@
+@{
+	ViewData["Title"] = "Auth";
+}
+<h1>@ViewData["Title"]</h1>
+
+
+<form method="POST" asp-area="" asp-controller="Home" asp-action="AccessOk">
+	Такой-то такой-то хочет доступ вот к этому... <br>
+
+	<div class="alert alert-success" role="alert"> @ViewBag.who хочет получить доступ к @ViewBag.data</div>
+
+	Access?<br>
+
+	<input type="submit" value="Access!" />
+</form>

@@ -1,0 +1,18 @@
+@{
+	ViewData["Title"] = "Sign in";
+}
+
+<div class="text-center">
+	<h1 class="display-4">Welcome</h1>
+	<p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+	<p>
+		Login: <br>
+		Password: <br>
+	</p>
+
+	<form method="POST" asp-area="" asp-controller="Home" asp-action="LoginWithQoolo">
+		<button name="foo" value="upvote">Login with Qoolo</button>
+	</form>
+
+</div>
