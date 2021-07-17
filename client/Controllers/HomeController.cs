@@ -13,6 +13,8 @@ using System.Web;
 using System.Net.Http;
 using System.Collections.Specialized;
 using Microsoft.AspNetCore.Http;
+using ClientApi;
+
 
 namespace client.Controllers
 {
@@ -27,54 +29,39 @@ namespace client.Controllers
 			_logger = logger;
 		}
 
+		public IActionResult Privacy()
+		{
+			return View();
+		}
+
+
+		public RedirectToActionResult Index()
+		{
+			// Узнаем, от кого пришел запрос.
+			// уникальный идентификатор для представления этого соединения.
+			// var id = HttpContext.Connection.Id;
+			// Console.WriteLine($"id: {id}");
+
+			return RedirectToAction("SignIn", "Home");//, new { a = 10, h = 12 });
+		}
+
 		public IActionResult SignIn()
 		{
 			return View();
 		}
 
-		public RedirectToActionResult Index()
+		[HttpPost]
+		public void LoginWithQoollo()
 		{
-			// Узнаем, от кого пришел запрос.
-			// string str = Request.ServerVariables["REMOTE_ADDR"];
-			// Console.WriteLine(str);
-			var addr = HttpContext.Connection.LocalIpAddress;
-			var port = HttpContext.Connection.LocalPort;
-			// уникальный идентификатор для представления этого соединения.
-			var id = HttpContext.Connection.Id;
-			var ipAddr = HttpContext.Connection.RemoteIpAddress;
+			// redirect_uri - по этому адресу вернется code.
+			string redirect_uri = "localhost:5000/Home/GetCode";
+			string data = "photo and video";
+			string clientName = "mysite";
 
-			Console.WriteLine($"Address: {addr} port: {port} id: {id} ipAddr: {ipAddr}");
+			var uri = ClientApi.QoolloAuth.GetUriForGetCode(redirect_uri, data, clientName);
 
-			return RedirectToAction("SignIn", "Home");//, new { a = 10, h = 12 });
-		}
-
-
-		public string Post(string uri, string data, string contentType, string method = "POST")
-		{
-			byte[] dataBytes = Encoding.UTF8.GetBytes(data);
-
-			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
-			request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-			request.ContentLength = dataBytes.Length;
-			request.ContentType = contentType;
-			request.Method = method;
-
-			using (Stream requestBody = request.GetRequestStream())
-			{
-				requestBody.Write(dataBytes, 0, dataBytes.Length);
-			}
-
-			using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-			using (Stream stream = response.GetResponseStream())
-			using (StreamReader reader = new StreamReader(stream))
-			{
-				return reader.ReadToEnd();
-			}
-		}
-
-		public IActionResult Privacy()
-		{
-			return View();
+			Response.Redirect(uri);
+			// Response.Redirect("http://localhost:5004/Home/Auth/?redirect_uri=localhost:5000/Home/GetCode&auth=code&data=photo&who=mysite");
 		}
 
 		public string GetCode(string code)
@@ -107,11 +94,6 @@ namespace client.Controllers
 			return "Access token = ";
 		}
 
-		[HttpPost]
-		public void LoginWithQoollo()
-		{
-			Response.Redirect("http://localhost:5004/Home/Auth/?redirect_uri=localhost:5000/Home/GetCode&auth=code&data=photo&who=mysite");
-		}
 
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()
