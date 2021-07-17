@@ -54,7 +54,7 @@ namespace client.Controllers
 		public void LoginWithQoollo()
 		{
 			// redirect_uri - по этому адресу вернется code.
-			string redirect_uri = "localhost:5000/Home/GetCode";
+			string redirect_uri = "localhost:5000/Home/AuthOk";
 			// TODO: Убрать clientName и data
 			// string data = "photo and video";
 			string clientName = "mysite";
@@ -65,26 +65,19 @@ namespace client.Controllers
 			// Response.Redirect("http://localhost:5004/Home/Auth/?redirect_uri=localhost:5000/Home/GetCode&auth=code&data=photo&who=mysite");
 		}
 
-		public string GetCode(string code)
+		public string AuthOk(string code)
 		{
-
-			// qoolo_auth.com/get_access_token
-			// clientID=j23jhk
-			// clientSecret=jsdf23ljkl
-			// code=as1kldj8rjdk 
+			string responseInString;
 			using (var c = new WebClient())
 			{
 				var postData = new NameValueCollection();
-				// TODO: clientID and clientSecret ???
-				postData.Add("clientID", "j23jhk");
-				postData.Add("clientSecret", "jsdf23ljkl");
 				postData.Add("code", code);
 				var response = c.UploadValues("http://localhost:5004/Home/GetAccessToken", "POST", postData);
-				string responseInString = Encoding.UTF8.GetString(response);
+				responseInString = Encoding.UTF8.GetString(response);
 				Console.WriteLine(responseInString);
 			}
 
-			return code;
+			return responseInString;
 		}
 
 		public string Auth(string redirect_uri, string code)

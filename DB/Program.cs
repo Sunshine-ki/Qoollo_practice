@@ -10,11 +10,13 @@ using System.Text.Json;
 using System.IO;
 using System.Xml;
 
+using QoolloSSO.backend.DataBase.IRepository;
+using QoolloSSO.backend.DataBase.MongoRepository;
 
 namespace QoolloSSO.backend.DataBase.Models
 {
 	class XMLReading //читает конфиг из xml
-    {
+	{
 		public static List<string> ReadXml(string fileName)
 		{
 			var DBinfo = new List<string>();
@@ -38,33 +40,34 @@ namespace QoolloSSO.backend.DataBase.Models
 			return DBinfo;
 		}
 	}
-	
+
 
 	class Program
 	{
 		static void Main(string[] args)
 		{
-			var DBinfo = XMLReading.ReadXml("C:/Users/maste/source/repos/Qoolo_practice/DB/DBconfig.xml");
-			
-			IUserRepository repositoryUser = new UserMongoRepository(DBinfo[0], DBinfo[1]);
+			// var DBinfo = XMLReading.ReadXml("C:/Users/maste/source/repos/Qoolo_practice/DB/DBconfig.xml");
 
-            User u1 = new User()
-            {
-                Id = "4",
-                Name = "name1",
-                Surname = "surname1",
-                Age = 20
-            };
+			// IUserRepository repositoryUser = new UserMongoRepository(DBinfo[0], DBinfo[1]);
+			// IUserRepository repositoryUser = new UserMongoRepository("mongodb://localhost:27017", "Qoolloo_name");
 
-			User u2 = new User()
-			{
-				Id = "8",
-				Name = "name2",
-				Surname = "surname2",
-				Age = 33
-			};
+			// User u1 = new User()
+			// {
+			// 	Id = "4",
+			// 	Name = "name1",
+			// 	Surname = "surname1",
+			// 	Age = 20
+			// };
 
-			//repositoryUser.SetUser(u1);
+			// User u2 = new User()
+			// {
+			// 	Id = "8",
+			// 	Name = "name2",
+			// 	Surname = "surname2",
+			// 	Age = 33
+			// };
+
+			// repositoryUser.SetUser(u1);
 			//repositoryUser.SetUser(u2);
 
 			//repositoryUser.DeleteUserById(u1.Id);
@@ -74,6 +77,12 @@ namespace QoolloSSO.backend.DataBase.Models
 			//repositoryUser.GetAllUsers();
 
 			//repositoryUser.UpdateUser(u1.Id, u2);
+
+			// ICodeRepository codeRepository = new CodeMongoRepository("mongodb://localhost:27017", "Qoolloo_name");
+			// Console.WriteLine(codeRepository.IsExists("codecodecode"));
+			// codeRepository.Set("codecodecode");
+			// codeRepository.Delete("codecodecode");
+			// Console.WriteLine("Ok");
 
 		}
 

@@ -9,15 +9,17 @@ using server.Models;
 using System.Web;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Specialized;
+using BusinessLogic;
 
 namespace server.Controllers
 {
 	public class HomeController : Controller
 	{
 		private readonly ILogger<HomeController> _logger;
-
+		Facade _facade;
 		public HomeController(ILogger<HomeController> logger)
 		{
+			Facade _facade = new Facade();
 			_logger = logger;
 		}
 
@@ -61,7 +63,7 @@ namespace server.Controllers
 		{
 			// К каким данным и кто хочет получить доступ.
 			ViewBag.who = HttpContext.Session.GetString("client_name");
-			ViewBag.data = HttpContext.Session.GetString("data");
+			// ViewBag.data = HttpContext.Session.GetString("data");
 
 			return View();
 		}
@@ -70,33 +72,28 @@ namespace server.Controllers
 		{
 			Console.WriteLine("Access!");
 
-			string code = server.Generator.RandomString(10);
-			string redirect_uti = HttpContext.Session.GetString("redirect_uri");
+			// TODO: Генератор code переписать?
+			Facade facade = new Facade();
 
-			// HttpContext.Session.SetString("code", code);
-			// Console.WriteLine("SESSION CODE: " + HttpContext.Session.GetString("code"));
+			string code = facade.CreateCode();
 
-			Response.Redirect("http://" + redirect_uti + "/?code=" + code);
+			string redirect_uri = HttpContext.Session.GetString("redirect_uri");
+
+			Response.Redirect("http://" + redirect_uri + "/?code=" + code);
 			// Response.Redirect("https://localhost:5001/Home/GetCode/?code=as1kldj8rjdk");
 		}
 
 		public string GetAccessToken(string code)
 		{
-			// Console.WriteLine(postData);
-			string realCode = HttpContext.Session.GetString("data");
-			// string userCode = postData["code"];
+			Facade facade = new Facade();
 
-			// string who = HttpContext.Session.GetString("who");
-			// Console.WriteLine(who);
-			// string values = string.Join(",", postData.AllKeys.SelectMany(key => postData.GetValues(key)));
-			Console.WriteLine($"data: {realCode} userCode: {code}");
-
-
-			var id = HttpContext.Connection.Id;
-			Console.WriteLine($"Connection id: {id}");
-
-			// TODO: Тут вернуть access_token
-			return "!!!I am sever!!!";
+			if (facade.IsExistsCode(code))
+			{
+				facade.DeleteCode(code);
+				// TODO: Тут вернуть token (access_token)
+				return "DATA";
+			}
+			return "null";
 		}
 
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
