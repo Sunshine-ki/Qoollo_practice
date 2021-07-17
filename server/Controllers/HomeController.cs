@@ -33,6 +33,7 @@ namespace server.Controllers
 			return View();
 		}
 
+
 		public IActionResult Auth(string redirect_uri, string auth, string clientName)
 		{
 			// TODO: Если сессии нет, то страница авторизации, 
@@ -40,6 +41,7 @@ namespace server.Controllers
 
 			var id = HttpContext.Connection.Id;
 			Console.WriteLine($"Connection id: {id}");
+
 
 			HttpContext.Session.SetString("redirect_uri", redirect_uri);
 			HttpContext.Session.SetString("client_name", clientName);
@@ -90,8 +92,11 @@ namespace server.Controllers
 			if (facade.IsExistsCode(code))
 			{
 				facade.DeleteCode(code);
+				string token = "DATA";
+				HttpContext.Session.SetString("token", token);
+
 				// TODO: Тут вернуть token (access_token)
-				return "DATA";
+				return token;
 			}
 			return "null";
 		}
