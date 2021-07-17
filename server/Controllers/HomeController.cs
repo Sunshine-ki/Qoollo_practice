@@ -36,6 +36,9 @@ namespace server.Controllers
 			// TODO: Если сессии нет, то страница авторизации, 
 			// если есть, то ридерект на страницу с согласием. 
 
+			var id = HttpContext.Connection.Id;
+			Console.WriteLine($"Connection id: {id}");
+
 			HttpContext.Session.SetString("redirect_uri", redirect_uri);
 			HttpContext.Session.SetString("data", data); // Какие данные
 			HttpContext.Session.SetString("client_name", clientName);
@@ -86,6 +89,10 @@ namespace server.Controllers
 			// Console.WriteLine(who);
 			// string values = string.Join(",", postData.AllKeys.SelectMany(key => postData.GetValues(key)));
 			Console.WriteLine($"data: {realCode} userCode: {code}");
+
+
+			var id = HttpContext.Connection.Id;
+			Console.WriteLine($"Connection id: {id}");
 
 			// TODO: Тут вернуть access_token
 			return "!!!I am sever!!!";
