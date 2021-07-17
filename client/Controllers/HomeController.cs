@@ -12,7 +12,7 @@ using client.Models;
 using System.Web;
 using System.Net.Http;
 using System.Collections.Specialized;
-
+using Microsoft.AspNetCore.Http;
 
 namespace client.Controllers
 {
@@ -22,6 +22,8 @@ namespace client.Controllers
 
 		public HomeController(ILogger<HomeController> logger)
 		{
+			// TODO: 
+			// HttpContext.Session.SetString("redirect_uri", redirect_uri);
 			_logger = logger;
 		}
 
@@ -32,12 +34,89 @@ namespace client.Controllers
 
 		public RedirectToActionResult Index()
 		{
+			// Узнаем, от кого пришел запрос.
+			// string str = Request.ServerVariables["REMOTE_ADDR"];
+			// Console.WriteLine(str);
+			var addr = HttpContext.Connection.LocalIpAddress;
+			var port = HttpContext.Connection.LocalPort;
+			// уникальный идентификатор для представления этого соединения.
+			var id = HttpContext.Connection.Id;
+			var ipAddr = HttpContext.Connection.RemoteIpAddress;
+
+			Console.WriteLine($"Address: {addr} port: {port} id: {id} ipAddr: {ipAddr}");
+
 			return RedirectToAction("SignIn", "Home");//, new { a = 10, h = 12 });
+		}
+
+		// static async Task<int> TestAsync()
+		// {
+		// 	// Create an HttpClientHandler object and set to use default credentials
+		// 	HttpClientHandler handler = new HttpClientHandler();
+		// 	handler.UseDefaultCredentials = true;
+
+		// 	// Create an HttpClient object
+		// 	HttpClient client = new HttpClient(handler);
+
+		// 	// Call asynchronous network methods in a try/catch block to handle exceptions
+		// 	// try
+		// 	// {
+		// 	HttpResponseMessage response = await client.GetAsync("http://localhost:5003/Home/TestPostRequest");
+
+		// 	response.EnsureSuccessStatusCode();
+
+		// 	string responseBody = await response.Content.ReadAsStringAsync();
+		// 	Console.WriteLine(responseBody);
+		// 	// }
+		// 	// catch (HttpRequestException e)
+		// 	// {
+		// 	// 	Console.WriteLine("\nException Caught!");
+		// 	// 	Console.WriteLine("Message :{0} ", e.Message);
+		// 	// }
+
+		// 	// Need to call dispose on the HttpClient and HttpClientHandler objects
+		// 	// when done using them, so the app doesn't leak resources
+		// 	handler.Dispose();
+		// 	client.Dispose();
+
+		// 	return 0;
+		// }
+
+		public string Post(string uri, string data, string contentType, string method = "POST")
+		{
+			byte[] dataBytes = Encoding.UTF8.GetBytes(data);
+
+			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
+			request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+			request.ContentLength = dataBytes.Length;
+			request.ContentType = contentType;
+			request.Method = method;
+
+			using (Stream requestBody = request.GetRequestStream())
+			{
+				requestBody.Write(dataBytes, 0, dataBytes.Length);
+			}
+
+			using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+			using (Stream stream = response.GetResponseStream())
+			using (StreamReader reader = new StreamReader(stream))
+			{
+				return reader.ReadToEnd();
+			}
 		}
 
 		public IActionResult Privacy()
 		{
+			// using (var c = new WebClient())
+			// {
+			// 	var values = new NameValueCollection();
+			// 	values.Add("postData", "value1");
+			// 	var response = c.UploadValues("http://localhost:5004/Home/TestPostRequest", "POST", values);
+			// 	string responseInString = Encoding.UTF8.GetString(response);
+			// 	Console.WriteLine(responseInString);
+			// }
+
 			// HttpClientHandler clientHandler = new HttpClientHandler();
+
 			// clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
 
 			// // Pass the handler to httpclient(from you are calling api)
@@ -50,8 +129,9 @@ namespace client.Controllers
 			// 	data["password"] = "myPassword";
 			// 	data["postData"] = "postData!";
 
-			// 	var response = wb.UploadValues("https://localhost:5003/Home/TestPostRequest", "POST", data);
+			// 	var response = wb.UploadValues("http://localhost:5003/Home/TestPostRequest", "POST", data);
 			// 	string responseInString = Encoding.UTF8.GetString(response);
+			// 	Console.WriteLine(responseInString);
 			// }
 
 			return View();
@@ -59,20 +139,38 @@ namespace client.Controllers
 
 		public string GetCode(string code)
 		{
+
+			// qoolo_auth.com/get_access_token
+			// clientID=j23jhk
+			// clientSecret=jsdf23ljkl
+			// code=as1kldj8rjdk 
+			using (var c = new WebClient())
+			{
+				var postData = new NameValueCollection();
+				// TODO: clientID and clientSecret ???
+				postData.Add("clientID", "j23jhk");
+				postData.Add("clientSecret", "jsdf23ljkl");
+				postData.Add("code", code);
+				var response = c.UploadValues("http://localhost:5004/Home/GetAccessToken", "POST", postData);
+				string responseInString = Encoding.UTF8.GetString(response);
+				Console.WriteLine(responseInString);
+			}
+
 			return code;
 		}
 
 		public string Auth(string redirect_uri, string code)
 		{
 			Console.WriteLine($"redirect_uri = {redirect_uri}\ncode = {code}");
-			// TODO: Общение с сервером.
+
+
 			return "Access token = ";
 		}
 
 		[HttpPost]
-		public void LoginWithQoolo()
+		public void LoginWithQoollo()
 		{
-			Response.Redirect("https://localhost:5003/Home/Auth/?redirect_uri=localhost:5001/Home/GetCode&auth=code&data=photo&who=mysite");
+			Response.Redirect("http://localhost:5004/Home/Auth/?redirect_uri=localhost:5000/Home/GetCode&auth=code&data=photo&who=mysite");
 		}
 
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using server.Models;
 using System.Web;
 using Microsoft.AspNetCore.Http;
+using System.Collections.Specialized;
 
 namespace server.Controllers
 {
@@ -34,7 +35,13 @@ namespace server.Controllers
 			// Прикрепляем код и отправляем.
 			// Console.WriteLine(HttpContext.Session.GetString("redirect_uri") + "/?code=" + RandomString(10));
 
-			Response.Redirect("https://" + HttpContext.Session.GetString("redirect_uri") + "/?code=" + RandomString(10));
+			string code = RandomString(10);
+			HttpContext.Session.SetString("code", code);
+			Console.WriteLine($"Code in session:{code}");
+
+			HttpContext.Session.SetString("code", code);
+			Console.WriteLine("SESSION CODE: " + HttpContext.Session.GetString("code"));
+			Response.Redirect("http://" + HttpContext.Session.GetString("redirect_uri") + "/?code=" + code);
 			// Response.Redirect("https://localhost:5001/Home/GetCode/?code=as1kldj8rjdk");
 		}
 
@@ -88,6 +95,22 @@ namespace server.Controllers
 		public IActionResult Privacy()
 		{
 			return View();
+		}
+
+
+		public string GetAccessToken(string code)
+		{
+			// Console.WriteLine(postData);
+			string realCode = HttpContext.Session.GetString("data");
+			// string userCode = postData["code"];
+
+			// string who = HttpContext.Session.GetString("who");
+			// Console.WriteLine(who);
+			// string values = string.Join(",", postData.AllKeys.SelectMany(key => postData.GetValues(key)));
+			Console.WriteLine($"data: {realCode} userCode: {code}");
+
+			// TODO: Тут вернуть access_token
+			return "!!!I am sever!!!";
 		}
 
 		public string TestPostRequest(string postData)
