@@ -48,38 +48,6 @@ namespace client.Controllers
 			return RedirectToAction("SignIn", "Home");//, new { a = 10, h = 12 });
 		}
 
-		// static async Task<int> TestAsync()
-		// {
-		// 	// Create an HttpClientHandler object and set to use default credentials
-		// 	HttpClientHandler handler = new HttpClientHandler();
-		// 	handler.UseDefaultCredentials = true;
-
-		// 	// Create an HttpClient object
-		// 	HttpClient client = new HttpClient(handler);
-
-		// 	// Call asynchronous network methods in a try/catch block to handle exceptions
-		// 	// try
-		// 	// {
-		// 	HttpResponseMessage response = await client.GetAsync("http://localhost:5003/Home/TestPostRequest");
-
-		// 	response.EnsureSuccessStatusCode();
-
-		// 	string responseBody = await response.Content.ReadAsStringAsync();
-		// 	Console.WriteLine(responseBody);
-		// 	// }
-		// 	// catch (HttpRequestException e)
-		// 	// {
-		// 	// 	Console.WriteLine("\nException Caught!");
-		// 	// 	Console.WriteLine("Message :{0} ", e.Message);
-		// 	// }
-
-		// 	// Need to call dispose on the HttpClient and HttpClientHandler objects
-		// 	// when done using them, so the app doesn't leak resources
-		// 	handler.Dispose();
-		// 	client.Dispose();
-
-		// 	return 0;
-		// }
 
 		public string Post(string uri, string data, string contentType, string method = "POST")
 		{
@@ -106,34 +74,6 @@ namespace client.Controllers
 
 		public IActionResult Privacy()
 		{
-			// using (var c = new WebClient())
-			// {
-			// 	var values = new NameValueCollection();
-			// 	values.Add("postData", "value1");
-			// 	var response = c.UploadValues("http://localhost:5004/Home/TestPostRequest", "POST", values);
-			// 	string responseInString = Encoding.UTF8.GetString(response);
-			// 	Console.WriteLine(responseInString);
-			// }
-
-			// HttpClientHandler clientHandler = new HttpClientHandler();
-
-			// clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
-
-			// // Pass the handler to httpclient(from you are calling api)
-			// HttpClient client = new HttpClient(clientHandler);
-
-			// using (var wb = new WebClient())
-			// {
-			// 	var data = new NameValueCollection();
-			// 	data["username"] = "myUser";
-			// 	data["password"] = "myPassword";
-			// 	data["postData"] = "postData!";
-
-			// 	var response = wb.UploadValues("http://localhost:5003/Home/TestPostRequest", "POST", data);
-			// 	string responseInString = Encoding.UTF8.GetString(response);
-			// 	Console.WriteLine(responseInString);
-			// }
-
 			return View();
 		}
 

@@ -79,16 +79,6 @@ namespace server.Controllers
 
 		public IActionResult Index()
 		{
-			// var a = HttpContext.Session;
-			// a.SetString("Name", "Alis");
-
-			// if (HttpContext.Session.Keys.Contains("name"))
-			// {
-			// 	return "Name";
-			// }
-			// HttpContext.Session.SetString("name", "Tom");
-			// return "How you?";
-
 			return View();
 		}
 
