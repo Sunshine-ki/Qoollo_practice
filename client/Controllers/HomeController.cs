@@ -55,10 +55,11 @@ namespace client.Controllers
 		{
 			// redirect_uri - по этому адресу вернется code.
 			string redirect_uri = "localhost:5000/Home/GetCode";
-			string data = "photo and video";
+			// TODO: Убрать clientName и data
+			// string data = "photo and video";
 			string clientName = "mysite";
 
-			var uri = ClientApi.QoolloAuth.GetUriForGetCode(redirect_uri, data, clientName);
+			var uri = ClientApi.QoolloAuth.GetUriForGetCode(redirect_uri, clientName);
 
 			Response.Redirect(uri);
 			// Response.Redirect("http://localhost:5004/Home/Auth/?redirect_uri=localhost:5000/Home/GetCode&auth=code&data=photo&who=mysite");

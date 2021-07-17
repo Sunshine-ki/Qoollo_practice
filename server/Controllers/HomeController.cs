@@ -31,7 +31,7 @@ namespace server.Controllers
 			return View();
 		}
 
-		public IActionResult Auth(string redirect_uri, string auth, string data, string clientName)
+		public IActionResult Auth(string redirect_uri, string auth, string clientName)
 		{
 			// TODO: Если сессии нет, то страница авторизации, 
 			// если есть, то ридерект на страницу с согласием. 
@@ -40,7 +40,6 @@ namespace server.Controllers
 			Console.WriteLine($"Connection id: {id}");
 
 			HttpContext.Session.SetString("redirect_uri", redirect_uri);
-			HttpContext.Session.SetString("data", data); // Какие данные
 			HttpContext.Session.SetString("client_name", clientName);
 
 			return View();
@@ -52,7 +51,9 @@ namespace server.Controllers
 			// TODO: password ---> HashPassword
 			Console.WriteLine($"SignIn {user.Login} {user.Password}");
 
-			return RedirectToAction("Accept", "Home");//, new { a = 10, h = 12 });
+			return RedirectToAction("AccessOk", "Home");//, new { a = 10, h = 12 });
+
+			// return RedirectToAction("Accept", "Home");//, new { a = 10, h = 12 });
 		}
 
 
