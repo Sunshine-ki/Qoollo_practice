@@ -1,12 +1,15 @@
 @{
-	ViewData["Title"] = "Auth";
+	ViewData["Title"] = "Login with Qoollo";
 }
 <h1>@ViewData["Title"]</h1>
 
 
 <form method="POST" asp-area="" asp-controller="Home" asp-action="SignIn">
-	Login with Qoollo:<br>
-	Login: <input type="Login" name="Login" /><br>
-	Password: <input type="Password" name="Password" /><br>
-	<input type="submit" value="Отправить" />
+	<label>Email address</label>
+	<input type="email" name="email" class="form-control" placeholder="Enter email" required>
+
+	<label>Password</label>
+	<input type="password" name="password" class="form-control" placeholder="Password" required> <br>
+
+	<button type="submit" class="btn btn-primary mb-2 btn-block">Sign in</button>
 </form>
