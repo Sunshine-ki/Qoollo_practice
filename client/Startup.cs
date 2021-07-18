@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Http;
 
 namespace client
 {
@@ -23,9 +24,9 @@ namespace client
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			// // For session.
-			// services.AddDistributedMemoryCache();
-			// services.AddSession();
+			// For session.
+			services.AddDistributedMemoryCache();
+			services.AddSession();
 
 			services.AddControllersWithViews();
 		}
@@ -46,7 +47,7 @@ namespace client
 			app.UseHttpsRedirection();
 			app.UseStaticFiles();
 
-			// app.UseSession();   // добавляем механизм работы с сессиями
+			app.UseSession();   // добавляем механизм работы с сессиями
 
 			app.UseRouting();
 

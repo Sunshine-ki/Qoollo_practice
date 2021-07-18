@@ -25,6 +25,8 @@ namespace server.Controllers
 
 		public IActionResult Index()
 		{
+			HttpContext.Session.SetString("visited", "true");
+
 			return View();
 		}
 
@@ -33,19 +35,30 @@ namespace server.Controllers
 			return View();
 		}
 
+		public IActionResult AuthExists()
+		{
+			return View();
+		}
 
 		public IActionResult Auth(string redirect_uri, string auth, string clientName)
 		{
+			HttpContext.Session.SetString("visited", "true");
+
 			// TODO: Если сессии нет, то страница авторизации, 
 			// если есть, то ридерект на страницу с согласием. 
 
 			var id = HttpContext.Connection.Id;
 			Console.WriteLine($"Connection id: {id}");
 
+			// if (HttpContext.Session.Keys.Contains("token"))
+			// {
+			// 	Response.Redirect(uri);
+			// }
 
 			HttpContext.Session.SetString("redirect_uri", redirect_uri);
 			HttpContext.Session.SetString("client_name", clientName);
 
+			// return RedirectToAction("AccessOk", "Home");//, new { a = 10, h = 12 });
 			return View();
 		}
 

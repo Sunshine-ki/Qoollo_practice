@@ -37,10 +37,26 @@ namespace client.Controllers
 
 		public RedirectToActionResult Index()
 		{
+			HttpContext.Session.SetString("visited", "true");
+
 			// Узнаем, от кого пришел запрос.
 			// уникальный идентификатор для представления этого соединения.
 			// var id = HttpContext.Connection.Id;
 			// Console.WriteLine($"id: {id}");
+
+			// TODO: Тут проверить сессию и если нету, то ридеректнуть на сервер авторизации.
+
+			if (HttpContext.Session.Keys.Contains("token"))
+			{
+				// Response.Redirect(uri);
+				Console.WriteLine("Содержит токен");
+			}
+			else
+			{
+				HttpContext.Session.SetString("token", "aaaatoken");
+				Console.WriteLine("НЕ содержит токен");
+			}
+
 
 			return RedirectToAction("SignIn", "Home");//, new { a = 10, h = 12 });
 		}
@@ -50,7 +66,7 @@ namespace client.Controllers
 			return View();
 		}
 
-		[HttpPost]
+		// [HttpPost]
 		public void LoginWithQoollo()
 		{
 			// redirect_uri - по этому адресу вернется code.
@@ -88,6 +104,12 @@ namespace client.Controllers
 			return "Access token = ";
 		}
 
+
+		// public string TokenExists(string token)
+		// {
+
+		// 	return "TokenExists";
+		// }
 
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()
