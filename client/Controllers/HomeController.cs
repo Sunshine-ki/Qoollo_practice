@@ -15,7 +15,6 @@ using System.Collections.Specialized;
 using Microsoft.AspNetCore.Http;
 using ClientApi;
 
-
 namespace client.Controllers
 {
 	public class HomeController : Controller
@@ -37,7 +36,7 @@ namespace client.Controllers
 
 		public RedirectToActionResult Index()
 		{
-			HttpContext.Session.SetString("visited", "true");
+			// HttpContext.Session.SetString("visited", "true");
 
 			// Узнаем, от кого пришел запрос.
 			// уникальный идентификатор для представления этого соединения.
@@ -46,19 +45,43 @@ namespace client.Controllers
 
 			// TODO: Тут проверить сессию и если нету, то ридеректнуть на сервер авторизации.
 
-			if (HttpContext.Session.Keys.Contains("token"))
-			{
-				// Response.Redirect(uri);
-				Console.WriteLine("Содержит токен");
-			}
-			else
-			{
-				HttpContext.Session.SetString("token", "aaaatoken");
-				Console.WriteLine("НЕ содержит токен");
-			}
+			// if (HttpContext.Session.Keys.Contains("token"))
+			// {
+			// 	// Response.Redirect(uri);
+			// 	Console.WriteLine("Содержит токен");
+			// }
+			// else
+			// {
+			// 	HttpContext.Session.SetString("token", "token");
+			// 	Console.WriteLine("НЕ содержит токен");
+			// }
 
+			// Console.WriteLine($"Count: {GlobalData.tokens.Count}");
+			// GlobalData.tokens.Add(new KeyValuePair<string, string>("id", "213"));
+
+			if (HttpContext.Request.Cookies.ContainsKey("id"))
+			{
+				Console.WriteLine($"Куки есть!");
+				return RedirectToAction("Welcome", "Home");//, new { a = 10, h = 12 });
+			}
+			// string name = HttpContext.Request.Cookies["name"];
 
 			return RedirectToAction("SignIn", "Home");//, new { a = 10, h = 12 });
+		}
+
+		public IActionResult Welcome()
+		{
+			// HttpContext.Response.Cookies.Append("id", id);
+			string id = HttpContext.Request.Cookies["id"];
+			string data = "";
+			foreach (var kvp in GlobalData.tokens) // kpv = key-value-par
+				if (kvp.Key == id)
+				{
+					data = kvp.Value;
+					break;
+				}
+			ViewBag.data = data;
+			return View();
 		}
 
 		public IActionResult SignIn()
@@ -81,19 +104,29 @@ namespace client.Controllers
 			// Response.Redirect("http://localhost:5004/Home/Auth/?redirect_uri=localhost:5000/Home/GetCode&auth=code&data=photo&who=mysite");
 		}
 
-		public string AuthOk(string code)
+		public RedirectToActionResult AuthOk(string code)
 		{
-			string responseInString;
+			string data;
 			using (var c = new WebClient())
 			{
 				var postData = new NameValueCollection();
 				postData.Add("code", code);
 				var response = c.UploadValues("http://localhost:5004/Home/GetAccessToken", "POST", postData);
-				responseInString = Encoding.UTF8.GetString(response);
-				Console.WriteLine(responseInString);
+				data = Encoding.UTF8.GetString(response);
+				Console.WriteLine(data);
 			}
 
-			return responseInString;
+			Random random = new Random();
+			string id = Convert.ToString(random.Next());
+
+			Console.WriteLine("Куки установлены!");
+			HttpContext.Response.Cookies.Append("id", id);
+			GlobalData.tokens.Add(new KeyValuePair<string, string>(id, data));
+
+			// ViewBag.data = data;
+			// return View();
+			return RedirectToAction("Index", "Home");//, new { a = 10, h = 12 });
+
 		}
 
 		public string Auth(string redirect_uri, string code)

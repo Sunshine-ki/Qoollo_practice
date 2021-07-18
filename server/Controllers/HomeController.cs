@@ -25,7 +25,19 @@ namespace server.Controllers
 
 		public IActionResult Index()
 		{
-			HttpContext.Session.SetString("visited", "true");
+			// HttpContext.Session.SetString("visited", "true");
+
+
+			// if (HttpContext.Session.Keys.Contains("token"))
+			// {
+			// 	// Response.Redirect(uri);
+			// 	Console.WriteLine("Содержит токен");
+			// }
+			// else
+			// {
+			// 	HttpContext.Session.SetString("token", "aaaatoken");
+			// 	Console.WriteLine("НЕ содержит токен");
+			// }
 
 			return View();
 		}

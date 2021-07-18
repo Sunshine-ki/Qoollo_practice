@@ -12,11 +12,17 @@ using Microsoft.AspNetCore.Http;
 
 namespace client
 {
+	public static class GlobalData
+	{
+		public static List<KeyValuePair<string, string>> tokens { get; set; }
+	}
+
 	public class Startup
 	{
 		public Startup(IConfiguration configuration)
 		{
 			Configuration = configuration;
+			GlobalData.tokens = new List<KeyValuePair<string, string>>();
 		}
 
 		public IConfiguration Configuration { get; }
@@ -25,10 +31,15 @@ namespace client
 		public void ConfigureServices(IServiceCollection services)
 		{
 			// For session.
-			services.AddDistributedMemoryCache();
-			services.AddSession();
+			// services.AddDistributedMemoryCache();
+			// services.AddSession();
+
+			//    services.AddDataProtection()
+			// .PersistKeysToAzureBlobStorage(new Uri("<blobUriWithSasToken>"))
+			// .ProtectKeysWithAzureKeyVault(new Uri("<keyIdentifier>"), new DefaultAzureCredential());
 
 			services.AddControllersWithViews();
+
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,7 +58,7 @@ namespace client
 			app.UseHttpsRedirection();
 			app.UseStaticFiles();
 
-			app.UseSession();   // добавляем механизм работы с сессиями
+			// app.UseSession();   // добавляем механизм работы с сессиями
 
 			app.UseRouting();
 
