@@ -54,7 +54,7 @@ namespace server.Controllers
 
 		public IActionResult Auth(string redirect_uri, string auth, string clientName)
 		{
-			HttpContext.Session.SetString("visited", "true");
+			// HttpContext.Session.SetString("visited", "true");
 
 			// TODO: Если сессии нет, то страница авторизации, 
 			// если есть, то ридерект на страницу с согласием. 
@@ -62,15 +62,13 @@ namespace server.Controllers
 			var id = HttpContext.Connection.Id;
 			Console.WriteLine($"Connection id: {id}");
 
-			// if (HttpContext.Session.Keys.Contains("token"))
-			// {
-			// 	Response.Redirect(uri);
-			// }
-
 			HttpContext.Session.SetString("redirect_uri", redirect_uri);
 			HttpContext.Session.SetString("client_name", clientName);
 
-			// return RedirectToAction("AccessOk", "Home");//, new { a = 10, h = 12 });
+			if (HttpContext.Session.Keys.Contains("code"))
+			{
+				return RedirectToAction("CodeExists", "Home");
+			}
 			return View();
 		}
 
@@ -95,6 +93,12 @@ namespace server.Controllers
 			return View();
 		}
 
+		public void CodeExists()
+		{
+			string code = HttpContext.Session.GetString("code");
+			string redirect_uri = HttpContext.Session.GetString("redirect_uri");
+			Response.Redirect("http://" + redirect_uri + "/?code=" + code);
+		}
 		public void AccessOk()
 		{
 			Console.WriteLine("Access!");
@@ -105,6 +109,7 @@ namespace server.Controllers
 			string code = facade.CreateCode();
 
 			string redirect_uri = HttpContext.Session.GetString("redirect_uri");
+			HttpContext.Session.SetString("code", code);
 
 			Response.Redirect("http://" + redirect_uri + "/?code=" + code);
 			// Response.Redirect("https://localhost:5001/Home/GetCode/?code=as1kldj8rjdk");
@@ -116,9 +121,8 @@ namespace server.Controllers
 
 			if (facade.IsExistsCode(code))
 			{
-				facade.DeleteCode(code);
+				// facade.DeleteCode(code);
 				string token = "DATA";
-				HttpContext.Session.SetString("token", token);
 
 				// TODO: Тут вернуть token (access_token)
 				return token;
