@@ -1,7 +1,6 @@
 using System;
 using QoolloSSO.backend.DataBase;
 
-
 using QoolloSSO.backend.DataBase.IRepository;
 using QoolloSSO.backend.DataBase.MongoRepository;
 
@@ -10,7 +9,7 @@ namespace BusinessLogic
 	public class Facade
 	{
 		string _connection = "mongodb://localhost:27017";
-		string _nameCollections = "Qoolloo_name";
+		string _nameCollections = "Qoollo_name";
 		ICodeRepository _codeRepository;
 		public Facade() { _codeRepository = new CodeMongoRepository(_connection, _nameCollections); }
 
@@ -36,8 +35,5 @@ namespace BusinessLogic
 			ICodeRepository _codeRepository = new CodeMongoRepository(_connection, _nameCollections);
 			return _codeRepository.IsExists(code);
 		}
-
-
-
 	}
 }

@@ -10,7 +10,7 @@ namespace ClientApi
 			// string data = "photo";
 			string clientName = "mysite";
 
-			var uri = ClientApi.QoolloAuth.GetUriForGetCode(redirect_uri, clientName);
+			var uri = ClientApi.QoolloAuth.GetUriForGetCode(redirect_uri, clientName, "5004");
 
 			Console.WriteLine(uri);
 		}
