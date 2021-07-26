@@ -1,3 +1,7 @@
 *.html linguist-documentation
 *.css linguist-documentation
 *.js linguist-documentation
+
+*/qoollo-sso-service-from-scratch/backend/ClientOne/wwwroot/* linguist-documentation
+*/qoollo-sso-service-from-scratch/backend/ClientTwo/wwwroot/* linguist-documentation
+*/qoollo-sso-service-from-scratch/backend/server/wwwroot/* linguist-documentation
